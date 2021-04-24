@@ -1,0 +1,17 @@
+.main{
+    background-image: url("img/bg.jpg");
+    background-size: auto;
+}
+.center{
+    text-align: center;
+}
+.about{
+    margin: 0 25%;
+}
+.btn{
+    display: block;
+    text-align: center;
+    padding: .67em;
+    cursor: pointer;
+    margin: 0 auto;
+}
