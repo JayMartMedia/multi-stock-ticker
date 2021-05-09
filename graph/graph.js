@@ -31,9 +31,13 @@ async function renderPage() {
             label: d.symbol,
             data: d.filtered.close_price,
             fill: false,
-            borderColor: 'rgb(75,192,192)',
+            borderColor: getRandomColor(),
             tension: 0
         }
+    })
+
+    const labels = data[0].filtered.timestamp.map(timestamp => {
+        return timestampToDate(timestamp);
     })
 
     /*** Create graph ***/
@@ -41,7 +45,7 @@ async function renderPage() {
     const priceGraph = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: data[0].filtered.timestamp,
+            labels: labels,
             datasets: datasets
         },
         options: {
@@ -52,7 +56,7 @@ async function renderPage() {
                 },
                 title: {
                     display: true,
-                    text: 'Chart.js Line Chart'
+                    text: 'Multi-stock Price Graph'
                 }
             }
         },
