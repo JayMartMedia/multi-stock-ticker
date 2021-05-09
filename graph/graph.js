@@ -2,7 +2,7 @@
  * Gets symbols from params passed in get request
  */
 function getSymbols() {
-    const symbols = window.location.search.substring(1).split('&').map(str => str.substring(0,str.length-3));
+    const symbols = window.location.search.substring(1).split('&').map(str => str.substring(0, str.length - 3));
     return symbols;
 }
 
@@ -18,10 +18,45 @@ function updateGraph(data) {
     console.log(data)
 }
 
-async function renderPage(){
+async function renderPage() {
+    /*** Get data ***/
     const symbols = getSymbols();
+    if(symbols.length === 0) return;
     const data = await getSymbolData(symbols);
     updateGraph(data);
+
+    /*** Format data ***/
+    const datasets = data.map(d => {
+        return {
+            label: d.symbol,
+            data: d.filtered.close_price,
+            fill: false,
+            borderColor: 'rgb(75,192,192)',
+            tension: 0
+        }
+    })
+
+    /*** Create graph ***/
+    const ctx = document.getElementById('priceGraph').getContext('2d');
+    const priceGraph = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data[0].filtered.timestamp,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart.js Line Chart'
+                }
+            }
+        },
+    });
 }
 
 renderPage();
